@@ -12,13 +12,29 @@ type PropsType = {
     title: string
     tasks: Array<TaskType>
     removeTask: (taskId: string) => void
-    changeFilter: (value: FilterValuesType) => void
+    // changeFilter: (value: FilterValuesType) => void
     addTask: (title: string) => void
 }
 
-export function Todolist(props: PropsType) {
+export function Todolist({tasks, removeTask, ...props}: PropsType) {
 
     let [title, setTitle] = useState("")
+    const onClickHandler = (tID:string) => removeTask(tID)
+
+    let [filter, setFilter] = useState<FilterValuesType>("all");
+
+    let tasksForTodolist = tasks;
+
+    if (filter === "active") {
+        tasksForTodolist = tasks.filter(t => !t.isDone);
+    }
+    if (filter === "completed") {
+        tasksForTodolist = tasks.filter(t => t.isDone);
+    }
+
+    function changeFilter(value: FilterValuesType) {
+        setFilter(value);
+    }
 
     const addTask = () => {
         props.addTask(title);
@@ -36,10 +52,12 @@ export function Todolist(props: PropsType) {
     }
 
     const tsarFoo = (value:FilterValuesType) => {
-        props.changeFilter(value)
+        changeFilter(value)
     }
 
-    const onClickHandler = (tID:string) => props.removeTask(tID)
+
+
+
 
     return <div>
         <h3>{props.title}</h3>
@@ -53,10 +71,8 @@ export function Todolist(props: PropsType) {
         </div>
         <ul>
             {
-                props.tasks.map(t => {
-
+                tasksForTodolist.map(t => {
                     //const onClickHandler = () => props.removeTask(t.id)
-
                     return <li key={t.id}>
                         <input type="checkbox" checked={t.isDone}/>
                         <span>{t.title}</span>
