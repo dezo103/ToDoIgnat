@@ -1,11 +1,11 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {Buttons} from "./Buttons";
 
-type FullInputType = {
+type FullInputPropsType = {
     callBack: (title: string) => void
 }
 
-export const FullInput = (props:FullInputType) => {
+export const FullInput = (props:FullInputPropsType) => {
     let [title, setTitle] = useState("")
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
